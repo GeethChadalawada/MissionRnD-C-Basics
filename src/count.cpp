@@ -14,11 +14,17 @@ NOTES:
 
 int count(int num1, int num2)
 {
-	int countint = 0, i = 0;
+	int countInt = 0, i = 0;
 
-	for (i = num1; i <= num2; i++)
-		if (i %num1 == 0)
-			countint++;
-
-	return countint;
+	if (num1 == 0 && num2 != 0)
+		return -1;
+	if (num1 > num2 || num1 == num2)
+		return 0;
+	else 
+	{
+		for (i = num1; i <= num2; i++)
+			if (i % num1 == 0)
+				countInt++;
+	}
+	return countInt;
 }
