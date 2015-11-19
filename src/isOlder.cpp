@@ -13,45 +13,41 @@ ERROR CASES: Return -1 if any DOB is invalid.
 NOTES: 		Don't use any built-in C functions for comparisions. You are free to write any helper functions.
 */
 
-int isValid(int d1, int m1, int y1, int d2, int m2, int y2)
+int isValidDate(int d1, int m1, int y1, int d2, int m2, int y2)
 {
 	if (d1 <= 0 || d1 > 31 || d2 <= 0 || d2 > 31 || m1 <= 0 || m1 > 12 || m2 <= 0 || m2 > 12 || y1 == 0 || y2 == 0)
 		return -1;
 
 	switch (m1)
 	{
-	case 2:
-		if (d1 == 29 && y1 % 4 != 0)
-			return -1;
-		else if (d1 > 28)
-			return -1;
-		break;
+		case 2:
+			if ((d1 == 29 && y1 % 4 != 0) || d1 > 29)
+				return -1;
+			break;
 
-	case 4:
-	case 6:
-	case 9:
-	case 11:
-		if (d1 == 31)
-			return -1;
-		break;
+		case 4:
+		case 6:
+		case 9:
+		case 11:
+			if (d1 == 31)
+				return -1;
+			break;
 	}
 
 	switch (m2)
 	{
-	case 2:
-		if (d2 == 29 && y2 % 4 != 0)
-			return -1;
-		else if (d2 > 28)
-			return -1;
-		break;
+		case 2:
+			if ((d2 == 29 && y2 % 4 != 0) || d2 > 29)
+				return -1;
+			break;
 
-	case 4:
-	case 6:
-	case 9:
-	case 11:
-		if (d2 == 31)
-			return -1;
-		break;
+		case 4:
+		case 6:
+		case 9:
+		case 11:
+			if (d2 == 31)
+				return -1;
+			break;
 	}
 
 	return 1;
@@ -66,7 +62,7 @@ int isOlder(char *dob1, char *dob2)
 
 	while (*(dob1 + i) != '-')
 	{
-		if (dob1[i] <= '0' || dob1[i] >= '9')
+		if (dob1[i] < '0' || dob1[i] > '9')
 			return -1;
 
 		date1 = (date1 * 10) + (*(dob1 + i) - '0');
@@ -77,7 +73,7 @@ int isOlder(char *dob1, char *dob2)
 
 	while (*(dob1 + i) != '-')
 	{
-		if (dob1[i] <= '0' || dob1[i] >= '9')
+		if (dob1[i] < '0' || dob1[i] > '9')
 			return -1;
 
 		month1 = (month1 * 10) + (*(dob1 + i) - '0');
@@ -88,7 +84,7 @@ int isOlder(char *dob1, char *dob2)
 
 	while (*(dob1 + i) != '\0')
 	{
-		if (dob1[i] <= '0' || dob1[i] >= '9')
+		if (dob1[i] < '0' || dob1[i] > '9')
 			return -1;
 
 		year1 = (year1 * 10) + (*(dob1 + i) - '0');
@@ -101,7 +97,7 @@ int isOlder(char *dob1, char *dob2)
 
 	while (*(dob2 + i) != '-')
 	{
-		if (dob2[i] <= '0' || dob2[i] >= '9')
+		if (dob2[i] < '0' || dob2[i] > '9')
 			return -1;
 
 		date2 = (date2 * 10) + (*(dob2 + i) - '0');
@@ -112,7 +108,7 @@ int isOlder(char *dob1, char *dob2)
 
 	while (*(dob2 + i) != '-')
 	{
-		if (dob2[i] <= '0' || dob2[i] >= '9')
+		if (dob2[i] < '0' || dob2[i] > '9')
 			return -1;
 
 		month2 = (month2 * 10) + (*(dob2 + i) - '0');
@@ -123,19 +119,18 @@ int isOlder(char *dob1, char *dob2)
 
 	while (*(dob2 + i) != '\0')
 	{
-		if (dob2[i] <= '0' || dob2[i] >= '9')
+		if (dob2[i] < '0' || dob2[i] > '9')
 			return -1;
 
 		year2 = (year2 * 10) + (*(dob2 + i) - '0');
 		i++;
 	}
 
-	i = isValid(date1, month1, year1, date2, month2, year2);
+	i = isValidDate(date1, month1, year1, date2, month2, year2);
 
-	if (i == -1)
-		return -1;
-
-	if (year1 > year2)
+	if (i != 1)
+		return i;
+	else if (year1 > year2)
 		return 2;
 	else if (year1 < year2)
 		return 1;
